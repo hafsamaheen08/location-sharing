@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consent Location Share</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="consent-screen" id="consentScreen" aria-labelledby="consentTitle" hidden>
+        <div class="consent-card">
+          <div class="brand compact-brand">
+            <span class="brand-mark" aria-hidden="true">CL</span>
+            <div>
+              <p class="eyebrow">Location request</p>
+              <h1 id="consentTitle">Share your live location?</h1>
+            </div>
+          </div>
+          <p id="consentText" class="consent-copy">
+            Only continue if you trust the person who sent this link.
+          </p>
+          <button id="consentShareButton" class="primary-button" type="button">
+            Allow location sharing
+          </button>
+          <button id="consentStopButton" type="button" hidden>Stop sharing</button>
+          <p id="consentStatus" class="helper-note">
+            Your browser will ask for location permission after you tap allow.
+          </p>
+        </div>
+      </section>
+
+      <section class="status-bar" aria-label="Application status">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">CL</span>
+          <div>
+            <p class="eyebrow">Consent first</p>
+            <h1>Location Share</h1>
+          </div>
+        </div>
+
+        <div class="signal-card">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <div>
+            <strong id="signalLabel">Ready</strong>
+            <span id="signalDetail">Create a permission link by SMS.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <section class="panel invite-panel" aria-labelledby="inviteTitle">
+          <div class="section-heading">
+            <p class="eyebrow">Step 1</p>
+            <h2 id="inviteTitle">Send a consent request</h2>
+          </div>
+
+          <form id="inviteForm" class="invite-form">
+            <label for="phoneInput">Mobile number</label>
+            <div class="number-row">
+              <select id="countryCode" aria-label="Country code">
+                <option value="+1">+1</option>
+                <option value="+44">+44</option>
+                <option value="+61">+61</option>
+                <option value="+91" selected>+91</option>
+                <option value="+971">+971</option>
+              </select>
+              <input id="phoneInput" inputmode="tel" autocomplete="tel" placeholder="98765 43210" required />
+            </div>
+
+            <label for="messageInput">SMS message</label>
+            <textarea id="messageInput" rows="4"></textarea>
+
+            <label class="toggle-row" for="autoSmsInput">
+              <input id="autoSmsInput" type="checkbox" checked />
+              <span>Open SMS composer automatically</span>
+            </label>
+
+            <button class="primary-button" type="submit">
+              <span aria-hidden="true">-></span>
+              Create SMS invite
+            </button>
+          </form>
+
+          <div class="link-card" id="linkCard" hidden>
+            <label for="inviteLink">Permission link</label>
+            <div class="copy-row">
+              <input id="inviteLink" readonly />
+              <button id="copyButton" type="button" title="Copy link">Copy</button>
+            </div>
+            <div class="action-row">
+              <a id="smsButton" class="primary-link" href="#">Open SMS</a>
+              <a id="dashboardButton" class="secondary-link" href="#">View dashboard</a>
+              <a id="testPermissionButton" class="secondary-link wide-link" href="#">Test permission page</a>
+            </div>
+            <p class="helper-note" id="deliveryNote">
+              Localhost links work only on this computer. To send this to a real phone, host the site on a public HTTPS URL.
+            </p>
+          </div>
+        </section>
+
+        <section class="map-stage" aria-label="Live location map">
+          <iframe
+            id="googleMapFrame"
+            class="google-map"
+            title="Google Maps location preview"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            hidden
+          ></iframe>
+          <div class="map-grid" aria-hidden="true">
+            <span class="road road-a"></span>
+            <span class="road road-b"></span>
+            <span class="road road-c"></span>
+            <span class="road road-d"></span>
+            <span class="zone zone-one"></span>
+            <span class="zone zone-two"></span>
+            <span class="zone zone-three"></span>
+          </div>
+          <div class="location-marker" id="locationMarker" aria-hidden="true">
+            <span></span>
+          </div>
+          <div class="map-card" id="mapCard">
+            <p class="eyebrow">Step 2</p>
+            <h2 id="mapTitle">Waiting for permission</h2>
+            <p id="mapSummary">The recipient must open the SMS link and approve browser location access.</p>
+          </div>
+        </section>
+
+        <aside class="panel details-panel" aria-labelledby="detailsTitle">
+          <div class="section-heading">
+            <p class="eyebrow">Live details</p>
+            <h2 id="detailsTitle">Session</h2>
+          </div>
+
+          <div class="metric-list">
+            <div class="metric">
+              <span>Latitude</span>
+              <strong id="latitudeValue">--</strong>
+            </div>
+            <div class="metric">
+              <span>Longitude</span>
+              <strong id="longitudeValue">--</strong>
+            </div>
+            <div class="metric">
+              <span>Accuracy</span>
+              <strong id="accuracyValue">--</strong>
+            </div>
+            <div class="metric">
+              <span>Updated</span>
+              <strong id="updatedValue">--</strong>
+            </div>
+          </div>
+
+          <a id="googleMapsLink" class="secondary-link map-link" href="#" target="_blank" rel="noreferrer" hidden>
+            Open in Google Maps
+          </a>
+
+          <div class="receiver-card" id="receiverCard" hidden>
+            <p class="eyebrow">Recipient view</p>
+            <h3>Share your location</h3>
+            <p id="receiverText">Only approve this if you trust the person who sent the link.</p>
+            <button id="shareButton" class="primary-button" type="button">
+              <span aria-hidden="true">+</span>
+              Allow location sharing
+            </button>
+            <button id="stopButton" type="button" hidden>Stop sharing</button>
+          </div>
+
+          <div class="notice">
+            <strong>Privacy note</strong>
+            <p>This app never locates a phone number by itself. Location appears only after the recipient opens the link and grants permission.</p>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>
